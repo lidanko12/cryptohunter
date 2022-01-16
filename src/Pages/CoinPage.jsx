@@ -5,6 +5,11 @@ import { useParams } from 'react-router-dom';
 import { SingleCoin } from '../api/api';
 import CoinInfo from '../components/CoinInfo';
 import { CryptoState } from '../components/CryptoContext';
+import ReactHtmlParser from 'react-html-parser'
+import { Button } from '@mui/material';
+import { doc, setDoc } from "firebase/firestore";
+import { database } from "../firebase";
+
 
 
 export const numberWithCommas=(x)=>{
@@ -14,12 +19,61 @@ export const numberWithCommas=(x)=>{
 const CoinPage = () => {
     const {id}=useParams();
     const[coin,setCoin]=useState();
-    const{currency,symbol}=CryptoState();
+    const{currency,symbol,user,setAlert,watchlist}=CryptoState();
 
     const getCoin =async()=>{
  const {data}=await axios.get(SingleCoin(id));
  setCoin(data)
     }
+    const inWatchlist = watchlist.includes(coin?.id);
+
+    const addToWatchlist = async () => {
+      const coinRef = doc(database, "watchlist", user.uid);
+      try {
+        await setDoc(
+          coinRef,
+          { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] },
+          { merge: true }
+        );
+  
+        setAlert({
+          open: true,
+          message: `${coin.name} Added to the Watchlist !`,
+          type: "success",
+        });
+      } catch (error) {
+        setAlert({
+          open: true,
+          message: error.message,
+          type: "error",
+        });
+      }
+    };
+  
+    const removeFromWatchlist = async () => {
+      const coinRef = doc(database, "watchlist", user.uid);
+      try {
+        await setDoc(
+          coinRef,
+          { coins: watchlist.filter((wish) => wish !== coin?.id) },
+          { merge: true }
+        );
+  
+        setAlert({
+          open: true,
+          message: `${coin.name} Removed from the Watchlist !`,
+          type: "success",
+        });
+      } catch (error) {
+        setAlert({
+          open: true,
+          message: error.message,
+          type: "error",
+        });
+      }
+    };
+  
+
 
  useEffect(()=>{
     getCoin()
@@ -91,7 +145,7 @@ if (!coin) return <LinearProgress style={{backgroundColor:'gold'}}/>
                     marginBottom:20
                 }}/>
                 <Typography variant='h3' className ={classes.heading}>{coin?.name}</Typography>
-                <Typography variant='subtitle1' className={classes.description}>{coin?.description.en.split('. ')[0]}.
+                <Typography variant='subtitle1' className={classes.description}>{ReactHtmlParser(coin?.description.en.split('. ')[0])}.
                 </Typography>
                 <div className={classes.marketData}>
                     <span style={{ display:'flex'}}>
@@ -122,9 +176,17 @@ if (!coin) return <LinearProgress style={{backgroundColor:'gold'}}/>
                         style={{
                             fontFamily:'Montserrat',
                         }}>{symbol}{' '}{numberWithCommas(coin?.market_data.market_cap[currency.toLowerCase()].toString().slice(0,-6))}M</Typography>
-                        
-
                     </span>
+                    {user && (
+                        <Button variant='outlined'
+                        style={{
+                            width:'100%',
+                            height:40,
+                            backgroundColor:"#eebc1d",
+                        }}
+                        onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
+                        >{inWatchlist ? 'Remove for Watchlist':'Add to Watchlist'}</Button>
+                    )}
                 </div>
             </div>
            <CoinInfo coin={coin}/>

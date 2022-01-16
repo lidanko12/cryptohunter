@@ -10,7 +10,9 @@ import {
 import { makeStyles, ThemeProvider } from "@material-ui/styles";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Auth from "../Auth";
 import { CryptoState } from "../CryptoContext";
+import UserSideBar from "../UserSideBar";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -26,7 +28,7 @@ const Header = () => {
   const styled = useStyles();
   const history = useNavigate();
 
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency ,user} = CryptoState();
 
   function changeValue(e) {
     setCurrency(e.target.value);
@@ -57,7 +59,7 @@ const Header = () => {
               className={styled.title}
             >
               {" "}
-              Crypto hunter
+              Crypto Informer
             </Typography>
             <Select
               value={currency}
@@ -72,6 +74,7 @@ const Header = () => {
               <MenuItem value={"USD"}>USD</MenuItem>
               <MenuItem value={"UAH"}>UAH</MenuItem>
             </Select>
+           { user ?<UserSideBar/>: <Auth/>}
           </Toolbar>
         </Container>
       </AppBar>

@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import CoinPage from "./Pages/CoinPage";
 import HomePage from "./Pages/HomePage";
+import AlertCom from "./components/AlertCom";
 
 function App() {
   const useStyles = makeStyles(() => ({
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/coins/:id" element={<CoinPage />} />
       </Routes>
+      <AlertCom/>
     </div>
   );
 }

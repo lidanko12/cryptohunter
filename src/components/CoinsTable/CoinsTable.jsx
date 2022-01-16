@@ -13,18 +13,15 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CoinList } from "../../api/api";
 import { CryptoState } from "../CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { numberWithCommas } from "../Carousel/Carousel";
 import { Pagination, PaginationItem } from "@material-ui/lab";
 
 const Coinstable = () => {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { currency, symbol } = CryptoState();
+  
+  const { currency, symbol,coins,loading,getCoins } = CryptoState();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const history = useNavigate();
@@ -34,12 +31,7 @@ const Coinstable = () => {
   };
  
 
-  const getCoins = async () => {
-    setLoading(true);
-    const { data } = await axios.get(CoinList(currency));
-    setCoins(data);
-    setLoading(false);
-  };
+  
 
   useEffect(() => {
     getCoins();

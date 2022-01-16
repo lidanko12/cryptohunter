@@ -1,11 +1,60 @@
 import React, { createContext, useContext, useState,useEffect } from 'react'
-
+import axios from 'axios';
+import { CoinList } from '../api/api';
+import { onAuthStateChanged } from '@firebase/auth';
+import { auth } from '../firebase';
+import { onSnapshot, doc } from "firebase/firestore";
+import { database } from "../firebase";
 
 const Crypto= createContext();
 
 const CryptoContext = ({children}) => {
     const [currency,setCurrency]=useState('USD');
     const [symbol,setSymbol]=useState('');
+    const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const[email,setEmail]=useState('');
+    const [password,setPassword]=useState('')
+    const[user,setUser]=useState(null);
+    const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    type: "success",
+  });
+  const [watchlist, setWatchlist] = useState([]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setUser(user);
+      else setUser(null);
+    });
+  }, []);
+
+  const getCoins = async () => {
+    setLoading(true);
+    const { data } = await axios.get(CoinList(currency));
+    setCoins(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (user) {
+      const coinRef = doc(database, "watchlist", user?.uid);
+      var unsubscribe = onSnapshot(coinRef, (coin) => {
+        if (coin.exists()) {
+          console.log(coin.data().coins);
+          setWatchlist(coin.data().coins);
+        } else {
+          console.log("No Items in Watchlist");
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
+
 
     useEffect(() => {
         if(currency==="USD") setSymbol('$');
@@ -13,7 +62,8 @@ const CryptoContext = ({children}) => {
             
     }, [currency]);
     return (
-        <Crypto.Provider value={{currency,symbol,setCurrency}}>
+        <Crypto.Provider value={{watchlist, coins,user,loading,currency,symbol,setCurrency,getCoins,  alert,email,password,setEmail,setPassword,
+          setAlert}}>
             {children}
         </Crypto.Provider>
     )
