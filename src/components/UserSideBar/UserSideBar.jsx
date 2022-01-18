@@ -8,6 +8,8 @@ import { signOut } from '@firebase/auth';
 import { doc, setDoc } from "firebase/firestore";
 import { numberWithCommas } from '../../Pages/CoinPage';
 import { DeleteOutline } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -76,12 +78,13 @@ const [bar, setBar] = useState({
   });
 
   const{user,setAlert,watchlist,coins,symbol} = CryptoState();
+  const history = useNavigate();
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setBar({ ...bar, [anchor]: open });
   };
 
@@ -95,6 +98,8 @@ const [bar, setBar] = useState({
     });
 
     toggleDrawer();
+    history("/");
+
   };
   const removeFromWatchlist = async (coin) => {
     const coinRef = doc(database, "watchlist", user.uid);
@@ -123,8 +128,8 @@ const [bar, setBar] = useState({
 
   return (
     <div>
-      {['right'].map((anchor) => (
-        <React.Fragment key={anchor}>
+      {['right'].map((anchor,id) => (
+        <div key={id}>
             <Avatar 
             onClick={toggleDrawer(anchor,true)}
             style={{
@@ -160,14 +165,14 @@ const [bar, setBar] = useState({
                 >
                   {user.displayName || user.email}
                 </span>
-                <div className={classes.watchlist}>
+                <div  className={classes.watchlist}>
                 <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
                     Watchlist
                   </span>
-                  {coins.map((coin) => {
+                  {coins.map((coin,index) => {
                     if (watchlist.includes(coin.id))
                       return (
-                        <div className={classes.coin}>
+                        <div  key= {index}className={classes.coin}>
                           <span>{coin.name}</span>
                           <span style={{ display: "flex", gap: 8 }}>
                             {symbol}{" "}
@@ -194,7 +199,7 @@ const [bar, setBar] = useState({
               </Button>
               </div>
           </Drawer>
-        </React.Fragment>
+        </div>
       ))}
     </div>
   );

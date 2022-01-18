@@ -15,6 +15,7 @@ const CryptoContext = ({children}) => {
     const [loading, setLoading] = useState(false);
     const[email,setEmail]=useState('');
     const [password,setPassword]=useState('')
+    const [open,setOpen]=useState(false)
     const[user,setUser]=useState(null);
     const [alert, setAlert] = useState({
     open: false,
@@ -40,7 +41,7 @@ const CryptoContext = ({children}) => {
   useEffect(() => {
     if (user) {
       const coinRef = doc(database, "watchlist", user?.uid);
-      var unsubscribe = onSnapshot(coinRef, (coin) => {
+      const unsubscribe = onSnapshot(coinRef, (coin) => {
         if (coin.exists()) {
           setWatchlist(coin.data().coins);
         } 
@@ -48,8 +49,10 @@ const CryptoContext = ({children}) => {
 
       return () => {
         unsubscribe();
+
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
 
@@ -60,7 +63,7 @@ const CryptoContext = ({children}) => {
             
     }, [currency]);
     return (
-        <Crypto.Provider value={{watchlist, coins,user,loading,currency,symbol,setCurrency,getCoins,  alert,email,password,setEmail,setPassword,
+        <Crypto.Provider value={{watchlist,open,setOpen,coins,user,loading,currency,symbol,setCurrency,getCoins,alert,email,password,setEmail,setPassword,
           setAlert}}>
             {children}
         </Crypto.Provider>
@@ -70,5 +73,5 @@ const CryptoContext = ({children}) => {
 export default CryptoContext
 
 export const CryptoState=()=>{
-     return useContext(Crypto)
+    return useContext(Crypto)
 }

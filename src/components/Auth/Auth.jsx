@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 // import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -38,18 +38,19 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const Auth=()=> {
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [value, setValue] = React.useState(0);
-  const {setAlert}=CryptoState()
+  const [value, setValue] =  useState(0);
+  const {setAlert,open,setOpen}=CryptoState()
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (_, newValue) => {
     setValue(newValue);
   };
 
   const classes = useStyles();
   const googleProvider = new GoogleAuthProvider();
+
   const signInWithGoogle=()=>{
     signInWithPopup(auth,googleProvider).then(res=>{
       setAlert({
