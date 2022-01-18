@@ -1,7 +1,7 @@
 import { Container, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
-import Carousel from '../Carousel/Carousel';
-
+import React,{Suspense} from 'react'
+import Loader from '../Loader'
+const Carousel = React.lazy(()=>import('../Carousel'))
 
 
 const useStyles= makeStyles(()=>({
@@ -37,8 +37,9 @@ const Banner = () => {
                     }}>Crypto Informer</Typography>
                     
         </div>
+        <Suspense fallback={<Loader/>}>
         <Carousel/>
-
+        </Suspense>
             </Container>
         </div>
     )

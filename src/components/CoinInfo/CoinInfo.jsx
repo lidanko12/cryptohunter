@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
                     justifyContent:'space-around',
                     width:'100%',
                 }}>
-                    {chartDays.map((day)=>(<ButtonSelect key={day.value}
+                    {chartDays.map((day)=>(<ButtonSelect  key={day.value}
                     onClick={()=>{setDays(day.value)
                     setFlag(false);
                    }}
