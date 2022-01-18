@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useState ,useEffect} from 'react'
 import { HistoricalChart } from '../../api/api';
 import {CryptoState} from '../../components/CryptoContext'
-import { createTheme,makeStyles,CircularProgress ,ThemeProvider} from '@material-ui/core';
+import { createTheme,makeStyles ,ThemeProvider} from '@material-ui/core';
+import Loader from '../Loader/Loader';
 import { Line } from 'react-chartjs-2';
 import { chartDays } from '../../api/data';
 import ButtonSelect from '../ButtonSelect';
@@ -42,7 +43,7 @@ const CoinInfo = ({coin}) => {
 useEffect(()=>{
     getData();
 // eslint-disable-next-line react-hooks/exhaustive-deps
-},[days]);
+},[days,currency]);
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -76,13 +77,7 @@ const useStyles = makeStyles((theme) => ({
             <div className={classes.container}>
             {
                 !historicData | flag===false ? (
-                    <CircularProgress 
-                    style={{
-                        color:'gold'
-                    }}
-                    size={250}
-                    thickness={1}
-                    />
+                    <Loader/>
                     ):(
                     <>
                     <Line 

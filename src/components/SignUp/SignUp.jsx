@@ -1,52 +1,52 @@
-import { TextField,Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import { Box } from "@mui/system";
-import {auth} from '../../firebase';
-import {createUserWithEmailAndPassword} from '@firebase/auth';
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
-import {CryptoState} from '../../components/CryptoContext'
+import { CryptoState } from "../../components/CryptoContext";
 
 const SignUp = ({ handleClose }) => {
   const [name, setName] = useState("");
-  const { setAlert,email,password,setEmail,setPassword} = CryptoState();
+  const { setAlert, email, password, setEmail, setPassword } = CryptoState();
 
-  const handleChangeName=e=>{
-  setName(e.target.value)
-  }
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
 
-  const handleChangeEmail=e=>{
-    setEmail(e.target.value)
-    }
-    
-    const handleChangePassword=e=>{
-      setPassword(e.target.value)
-      } 
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
 
-  const handleSubmitForm=async()=>{
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmitForm = async () => {
     try {
-        const result = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        setAlert({
-          open: true,
-          message: `Sign Up Successful. Welcome ${result.user.email}`,
-          type: "success",
-        });
-  
-        handleClose();
-      } catch (error) {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-        return;
-      }
-    };
- return (
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setAlert({
+        open: true,
+        message: `Sign Up Successful. Welcome ${result.user.email}`,
+        type: "success",
+      });
+
+      handleClose();
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+      });
+      return;
+    }
+  };
+  return (
     <>
-      <form onSubmit={handleSubmitForm}>
+      <form>
         <Box
           p={3}
           style={{
@@ -66,38 +66,40 @@ const SignUp = ({ handleClose }) => {
             fullWidth
             required
             onChange={handleChangeName}
-
-           />
+          />
           <TextField
             variant="outlined"
             type="text"
             label="Email"
-            value={email}
+            // value={email}
             name="email"
             id="email"
             placeholder="Enter Email"
             fullWidth
             onChange={handleChangeEmail}
-
-            />
+          />
 
           <TextField
             variant="outlined"
             type="password"
             label="Password"
-            value={password}
+            // value={password}
             id="password"
             name="password"
             placeholder="Enter Password"
             fullWidth
             onChange={handleChangePassword}
-            />
-          <Button variant='contained'
-          size="large"
-          style={{
-              backgroundColor:'#eebc1d'
-          }}
-          onClick={handleSubmitForm}>Sing UP</Button>
+          />
+          <Button
+            variant="contained"
+            size="large"
+            style={{
+              backgroundColor: "#eebc1d",
+            }}
+            onClick={handleSubmitForm}
+          >
+            Sing UP
+          </Button>
         </Box>
       </form>
     </>

@@ -1,7 +1,6 @@
 import {
   Container,
   createTheme,
-  LinearProgress,
   Table,
   TableBody,
   TableCell,
@@ -17,7 +16,8 @@ import React, { useEffect, useState } from "react";
 import { CryptoState } from "../CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { numberWithCommas } from "../Carousel/Carousel";
-import { Pagination, PaginationItem } from "@material-ui/lab";
+import { Pagination} from "@material-ui/lab";
+import Loader from "../Loader/Loader";
 
 const Coinstable = () => {
   
@@ -80,9 +80,9 @@ const Coinstable = () => {
         <Typography
           variant="h4"
           style={{
-            // color: "darkgrey",
+            color: "darkgrey",
             fontFamily: "Montserrat",
-            margin: 18,
+            margin: 20,
           }}
         >
           Cryptocurrency Prices by Market Cap
@@ -98,7 +98,7 @@ const Coinstable = () => {
         ></TextField>{" "}
         <TableContainer>
           {loading ? (
-            <LinearProgress style={{ backgroundColor: "gold" }} />
+            <Loader/>
           ) : (
             <Table>
               <TableHead style={{ backgroundColor: "#eebc1d" }}>
@@ -111,7 +111,7 @@ const Coinstable = () => {
                         fontFamily: "Montserrat",
                       }}
                       key={head}
-                      align={head === "Coin" ? "" : "right"}
+                      align={head === "Coin" ? "left" : "right"}
                     >
                       {head}
                     </TableCell>
@@ -197,7 +197,7 @@ const Coinstable = () => {
             </Table>
           )}
         </TableContainer>
-        <Pagination
+        <Pagination shape="rounded" 
           count={Number((handleSearch()?.length / 10).toFixed(0))}
           style={{
             padding: 20,
@@ -211,7 +211,6 @@ const Coinstable = () => {
             window.scroll(0, 450);
           }}
         >
-          <PaginationItem></PaginationItem>
         </Pagination>
       </Container>
     </ThemeProvider>

@@ -1,14 +1,14 @@
 
-import * as React from 'react';
-import Drawer from '@mui/material/Drawer';
+import React,{useState} from 'react';
 import { CryptoState } from '../CryptoContext';
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button,Drawer } from '@material-ui/core';
 import { makeStyles} from "@material-ui/styles";
 import { auth ,database} from '../../firebase';
 import { signOut } from '@firebase/auth';
-import { AiFillDelete } from "react-icons/ai";
 import { doc, setDoc } from "firebase/firestore";
 import { numberWithCommas } from '../../Pages/CoinPage';
+import { DeleteOutline } from '@mui/icons-material';
+
 
 
 const useStyles=makeStyles({
@@ -54,14 +54,27 @@ const useStyles=makeStyles({
         gap: 12,
         overflowY: "scroll",
       },
+      coin: {
+        padding: 10,
+        borderRadius: 5,
+        color: "black",
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#EEBC1D",
+        boxShadow: "0 0 3px black",
+      },
 
 })
 
 
 const UserSideBar=()=> {
-  const [state, setState] = React.useState({
+
+const [bar, setBar] = useState({
     right: false,
   });
+
   const{user,setAlert,watchlist,coins,symbol} = CryptoState();
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -69,7 +82,7 @@ const UserSideBar=()=> {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setBar({ ...bar, [anchor]: open });
   };
 
   const classes = useStyles();
@@ -78,7 +91,7 @@ const UserSideBar=()=> {
     setAlert({
       open: true,
       type: "success",
-      message: "Logout Successfull !",
+      message: "Logout Successfully !",
     });
 
     toggleDrawer();
@@ -126,7 +139,7 @@ const UserSideBar=()=> {
             />
           <Drawer
             anchor={anchor}
-            open={state[anchor]}
+            open={bar[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >
               <div className={classes.container}>
@@ -159,7 +172,7 @@ const UserSideBar=()=> {
                           <span style={{ display: "flex", gap: 8 }}>
                             {symbol}{" "}
                             {numberWithCommas(coin.current_price.toFixed(2))}
-                            <AiFillDelete
+                            <DeleteOutline
                               style={{ cursor: "pointer" }}
                               fontSize="16"
                               onClick={() => removeFromWatchlist(coin)}

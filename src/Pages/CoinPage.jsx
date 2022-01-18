@@ -1,14 +1,16 @@
-import { LinearProgress, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,Suspense } from 'react'
 import { useParams } from 'react-router-dom';
 import { SingleCoin } from '../api/api';
-import CoinInfo from '../components/CoinInfo';
+// import CoinInfo from '../components/CoinInfo';
 import { CryptoState } from '../components/CryptoContext';
 import ReactHtmlParser from 'react-html-parser'
-import { Button } from '@mui/material';
 import { doc, setDoc } from "firebase/firestore";
 import { database } from "../firebase";
+import Loader from '../components/Loader/Loader';
+const CoinInfo = React.lazy(() => import('../components/CoinInfo'));
+
 
 
 
@@ -132,7 +134,7 @@ const CoinPage = () => {
  }));
 
 const classes=useStyles();
-if (!coin) return <LinearProgress style={{backgroundColor:'gold'}}/>
+if (!coin) return <Loader/>
 
     return (
         <div className={classes.container}>
@@ -182,14 +184,16 @@ if (!coin) return <LinearProgress style={{backgroundColor:'gold'}}/>
                         style={{
                             width:'100%',
                             height:40,
-                            backgroundColor:"#eebc1d",
-                        }}
+                            backgroundColor: inWatchlist ? "#ff0000" : "#EEBC1D",
+                          }}
                         onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
                         >{inWatchlist ? 'Remove for Watchlist':'Add to Watchlist'}</Button>
                     )}
                 </div>
             </div>
+            <Suspense fallback={<Loader/>}>
            <CoinInfo coin={coin}/>
+           </Suspense>
         </div>
     )
 }

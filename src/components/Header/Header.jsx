@@ -53,13 +53,13 @@ const Header = () => {
       <AppBar color="transparent" position="static">
         <Container>
           <Toolbar>
-            <Typography
+          <Typography
               variant="h5"
               onClick={handleSubmit}
               className={styled.title}
             >
               {" "}
-              Crypto Informer
+              Crypto Info
             </Typography>
             <Select
               value={currency}
@@ -73,6 +73,8 @@ const Header = () => {
             >
               <MenuItem value={"USD"}>USD</MenuItem>
               <MenuItem value={"UAH"}>UAH</MenuItem>
+              <MenuItem value={"EUR"}>EUR</MenuItem>
+
             </Select>
            { user ?<UserSideBar/>: <Auth/>}
           </Toolbar>

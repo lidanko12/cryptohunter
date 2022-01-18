@@ -42,11 +42,8 @@ const CryptoContext = ({children}) => {
       const coinRef = doc(database, "watchlist", user?.uid);
       var unsubscribe = onSnapshot(coinRef, (coin) => {
         if (coin.exists()) {
-          console.log(coin.data().coins);
           setWatchlist(coin.data().coins);
-        } else {
-          console.log("No Items in Watchlist");
-        }
+        } 
       });
 
       return () => {
@@ -59,6 +56,7 @@ const CryptoContext = ({children}) => {
     useEffect(() => {
         if(currency==="USD") setSymbol('$');
         else if (currency==="UAH") setSymbol('₴');
+        else if (currency==='EUR') setSymbol('€');
             
     }, [currency]);
     return (

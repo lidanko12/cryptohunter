@@ -6,7 +6,7 @@ import Carousel from '../Carousel/Carousel';
 
 const useStyles= makeStyles(()=>({
  banner:{
-     backgroundImage:"url(./banner2.jpeg)"
+     backgroundImage:"url(./banner2.webp)"
  },
  bannerContent:{
      height:400,
@@ -35,14 +35,7 @@ const Banner = () => {
                         fontWeight:'bold',
                         marginBottom:15,
                     }}>Crypto Informer</Typography>
-                    <Typography variant="subtitle2"
-                    style={{
-                        color:'darkgrey',
-                        textTransform:'capitalize',
-                        fontFamily:"Montserrat",
-                    }}>
-                        Get all the info regarding your favorite Crypto 
-                    </Typography>
+                    
         </div>
         <Carousel/>
 

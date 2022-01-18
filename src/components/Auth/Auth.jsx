@@ -1,16 +1,19 @@
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
+// import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import SignIn from '../SignIn';
 import SignUp from '../SignUp';
 import { AppBar,makeStyles } from '@material-ui/core';
+import Fade from '@mui/material/Fade';
 import { Tab, Tabs } from '@mui/material';
 import GoogleButton from 'react-google-button';
 import { auth } from '../../firebase';
 import { CryptoState } from '../CryptoContext';
 import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth';
 import Box from '@mui/material/Box';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+
 const useStyles = makeStyles((theme) => ({
     modal: {
       display: "flex",
@@ -74,19 +77,20 @@ export const Auth=()=> {
           marginLeft:20,
           backgroundColor:'#eebc1d',
       }}
-      onClick={handleOpen}>Sing In</Button>
-     <Modal
+      onClick={handleOpen} endIcon={<LoginOutlinedIcon/>}>Sing In</Button>
+     <Modal 
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
         onClose={handleClose}
         closeAfterTransition
-        BackdropComponent={Backdrop}
+        // BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
+          <Fade in={open}>
           <div className={classes.paper}>
               <AppBar position='static' 
               style={{
@@ -96,6 +100,13 @@ export const Auth=()=> {
                 <Tabs 
                 value={value}
                 onChange={handleChange}
+                textColor="inherit"
+                TabIndicatorProps={{
+                  sx: {
+                    backgroundColor: 'red',
+                    height: 3,
+                  },
+                }}
                 variant='fullWidth'
                 style={{
                     borderRadius:10
@@ -116,6 +127,7 @@ export const Auth=()=> {
                 onClick={signInWithGoogle}/>
               </Box>
           </div>
+          </Fade>
       </Modal>
     </div>
   );
