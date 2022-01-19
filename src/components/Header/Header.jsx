@@ -76,7 +76,7 @@ const Header = () => {
               <MenuItem value={"EUR"}>EUR</MenuItem>
 
             </Select>
-           { user ?<UserSideBar/>: <Auth/>}
+           { user? <UserSideBar/>: <Auth/>}
           </Toolbar>
         </Container>
       </AppBar>

@@ -27,9 +27,11 @@ const CryptoContext = ({children}) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) setUser(user);
+    
+
       else setUser(null);
     });
-  }, []);
+  }, [user]);
 
   const getCoins = async () => {
     setLoading(true);
@@ -50,7 +52,7 @@ const CryptoContext = ({children}) => {
       return () => {
         unsubscribe();
 
-      };
+       };
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -62,8 +64,9 @@ const CryptoContext = ({children}) => {
         else if (currency==='EUR') setSymbol('€');
             
     }, [currency]);
+    
     return (
-        <Crypto.Provider value={{watchlist,open,setOpen,coins,user,loading,currency,symbol,setCurrency,getCoins,alert,email,password,setEmail,setPassword,
+        <Crypto.Provider value={{watchlist,open,setOpen,coins,user,setLoading,loading,currency,symbol,setCurrency,getCoins,alert,email,password,setEmail,setPassword,
           setAlert}}>
             {children}
         </Crypto.Provider>

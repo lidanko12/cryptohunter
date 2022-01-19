@@ -19,6 +19,7 @@ import Loader from "./components/Loader/Loader";
 
 
 function App() {
+  
   const useStyles = makeStyles(() => ({
     App: {
       backgroundColor: "#14161a",
@@ -26,10 +27,13 @@ function App() {
       minHeight: "100vh",
     },
   }));
+  
 
   const classes = useStyles();
   return (
-    <div className={classes.App}>
+    
+       (
+        <div className={classes.App}>
       <Header />
       <Suspense fallback = {<Loader/>}>
       <Routes>
@@ -39,7 +43,9 @@ function App() {
       </Suspense>
       <AlertCom/>
     </div>
-  );
+      )
+  )
+    
 }
 
 export default App;
