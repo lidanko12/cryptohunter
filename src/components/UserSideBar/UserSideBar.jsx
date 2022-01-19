@@ -137,7 +137,7 @@ const [bar, setBar] = useState({
                 width:38,
                 marginLeft:15,
                 cursor:'pointer',
-                // backgroundColor:'#eebc1d',
+                backgroundColor:'#eebc1d',
             }}
             src={user.photoURL}
             alt={user.displayName||user.email}
