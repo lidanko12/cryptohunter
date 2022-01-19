@@ -6,9 +6,9 @@ import { makeStyles} from "@material-ui/styles";
 import { auth ,database} from '../../firebase';
 import { signOut } from '@firebase/auth';
 import { doc, setDoc } from "firebase/firestore";
-import { numberWithCommas } from '../../Pages/CoinPage';
 import { DeleteOutline } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
+import WatchList from '../Watchlist/WatchList';
 
 
 
@@ -77,7 +77,7 @@ const [bar, setBar] = useState({
     right: false,
   });
 
-  const{user,setAlert,watchlist,coins,symbol} = CryptoState();
+  const{user,setAlert,watchlist} = CryptoState();
   const history = useNavigate();
 
 
@@ -137,7 +137,7 @@ const [bar, setBar] = useState({
                 width:38,
                 marginLeft:15,
                 cursor:'pointer',
-                backgroundColor:'#eebc1d',
+                // backgroundColor:'#eebc1d',
             }}
             src={user.photoURL}
             alt={user.displayName||user.email}
@@ -165,30 +165,8 @@ const [bar, setBar] = useState({
                 >
                   {user.displayName || user.email}
                 </span>
-                <div  className={classes.watchlist}>
-                <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
-                    Watchlist
-                  </span>
-                  {coins.map((coin,index) => {
-                    if (watchlist.includes(coin.id))
-                      return (
-                        <div  key= {index}className={classes.coin}>
-                          <span>{coin.name}</span>
-                          <span style={{ display: "flex", gap: 8 }}>
-                            {symbol}{" "}
-                            {numberWithCommas(coin.current_price.toFixed(2))}
-                            <DeleteOutline
-                              style={{ cursor: "pointer" }}
-                              fontSize="16"
-                              onClick={() => removeFromWatchlist(coin)}
-                            />
-                          </span>
-                        </div>
-                      );
-                    else return <></>;
-                  })}
-                </div>
-                  
+            
+                <WatchList/>
                 </div>
                 <Button
                 variant="contained"

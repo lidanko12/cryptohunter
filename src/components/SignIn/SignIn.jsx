@@ -5,9 +5,9 @@ import { signInWithEmailAndPassword } from '@firebase/auth';
 import { auth } from '../../firebase';
 
 const SignIn = ({handleClose}) => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('');
-    const {setAlert}=CryptoState();
+    // const [email, setEmail] = useState('')
+    // const [password, setPassword] = useState('');
+    const {setAlert,email,setEmail,password,setPassword}=CryptoState();
     const handleChangePassword=(e)=>{
         setPassword(e.target.value)
     }

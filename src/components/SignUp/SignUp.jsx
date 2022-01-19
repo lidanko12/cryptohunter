@@ -46,7 +46,7 @@ const SignUp = ({ handleClose }) => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmitForm}>
         <Box
           p={3}
           style={{
